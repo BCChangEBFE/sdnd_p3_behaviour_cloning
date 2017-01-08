@@ -60,3 +60,4 @@ For some of the more difficult spots with sharper turns, data is duplicated a fe
 5. While testing the model and observing the effects of tuning various parameters, smaller image size is used to speed up the process. 
 
 ####More details can be found on behaviour-cloning.ipynb, while the source code is also extracted out as behaviour-cloning.py
+####A video can be found at: https://www.youtube.com/watch?v=VR7RftOcgQw&feature=youtu.be
