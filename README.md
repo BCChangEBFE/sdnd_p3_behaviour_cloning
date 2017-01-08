@@ -59,4 +59,4 @@ For some of the more difficult spots with sharper turns, data is duplicated a fe
 4. During my test runs, it seems that adding drop out layer to one of the more heavy layers (5 or 6) helps prevent over fitting. But adding to layer 7 or 8 seems to really slow down the training. 
 5. While testing the model and observing the effects of tuning various parameters, smaller image size is used to speed up the process. 
 
-More details can be found on behaviour-cloning.ipynb, while the source code is also extracted out as behaviour-cloning.py
+####More details can be found on behaviour-cloning.ipynb, while the source code is also extracted out as behaviour-cloning.py
