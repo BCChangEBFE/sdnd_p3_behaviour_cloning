@@ -18,17 +18,11 @@ while True:
         break
     center,left,right,steering,throttle,brake,speed = line.split(",")
     y.append( float(steering) )
-    #x.append( misc.imresize(mpimg.imread(center),(32,64)) )
     #x.append( misc.imresize(mpimg.imread(center),(64,128)) )
-    #x.append( misc.imresize(mpimg.imread(center),(160,320)) )
     x.append( mpimg.imread(center) )
 
 
 data = {'features':x, 'results':y}
-#fout = open('data.p','bw+')
-#pickle.dump(data,fout, protocol=4)
-#pickle.dump(data,fout)
 
 pickle.dump( data, open( "data.p", "wb" ) )   
-#pickle.dump( data, open( "data.p", "wb" ), protocol=2 )   
 
