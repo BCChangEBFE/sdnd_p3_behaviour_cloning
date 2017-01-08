@@ -43,6 +43,12 @@ The Network consists of 9 layers,
  - layer 8: Fully Connected Flat layer with 10 nodes.
  - layer 9: Fully Connected Output layer with 1 nodes.
 
+### Training Parameter
+ - training_epochs = 40
+ - batch_size = 128
+ - dropout_rate = 0.50
+ - learning_rate = 0.005
+
 ### Tuning and Some Observations
 
 For some of the more difficult spots with sharper turns, data is duplicated a few more times (4 to 10 times) untill reasonable results are obtained.
@@ -52,3 +58,5 @@ For some of the more difficult spots with sharper turns, data is duplicated a fe
 3. Including some batch_normalizaion layers in the earlier layers also result in a better performance. Including batch_normalization in later layers actually seems to make things worse.
 4. During my test runs, it seems that adding drop out layer to one of the more heavy layers (5 or 6) helps prevent over fitting. But adding to layer 7 or 8 seems to really slow down the training. 
 5. While testing the model and observing the effects of tuning various parameters, smaller image size is used to speed up the process. 
+
+More details can be found on behaviour-cloning.ipynb, while the source code is also extracted out as behaviour-cloning.py
