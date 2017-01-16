@@ -51,6 +51,12 @@ split_test_validation_set = False
 
 y_train = np.array(all_data["results"])
 x_train = np.array(all_data["features"])
+##reshape the image into 160x320
+#x_train = []
+#for i in range(len(all_data["features"])):
+#    x_train.append(misc.imresize(all_data["features"][i],(160,320)))
+#x_train = np.array(x_train)
+
 
 print("shape x_all:", x_train.shape)
 print("shape y_all:", y_train.shape)
@@ -138,6 +144,9 @@ print("shape of x_test, ",x_test.shape)
 print("shape of y_test, ",y_test.shape)
 
 
+# ## Try Transfer Learning with AlexNet
+# 
+
 # In[5]:
 
 n_train = x_train.shape[0]
@@ -151,7 +160,7 @@ input_shape = x_train.shape[1:]
 
 ####################################
 # Training Parameters
-training_epochs = 40
+training_epochs = 22
 batch_size = 128
 dropout_rate = 0.50
 learning_rate = 0.005
@@ -172,6 +181,8 @@ from keras.layers.normalization import BatchNormalization
 
 from keras import backend as K
 from keras.engine.topology import Layer
+
+from keras.callbacks import ModelCheckpoint
 
 keep_prob = tf.placeholder(tf.float32)
 
@@ -206,6 +217,8 @@ if resize_image:
     model.add(Lambda(lambda x: x*1.8/255.0 - 1.))
 else:
     model.add(Lambda(lambda x: x*1.8/255.0 - 1., input_shape=input_shape))
+
+#model.add(BatchNormalization())
     
 #hidden layer 1
 model.add(Convolution2D(24, 5,5,
@@ -239,27 +252,35 @@ model.add(Convolution2D(64, 3,3,
                         activation='elu',
                         init='he_normal'))
 model.add(MaxPooling2D((2,2)))
+#model.add(BatchNormalization())
 
 #hidden layer 5
-model.add(Convolution2D(64, 3,3, 
+model.add(Convolution2D(76, 3,3, 
                         border_mode='same',
                         activation='elu',
                         init='he_normal'))
 model.add(MaxPooling2D((2,2)))
+#model.add(BatchNormalization())
 
 #hidden layer 6
 model.add(Flatten())
 model.add(Dense(1164, activation='elu', init='he_normal'))
-model.add((Dropout(dropout_rate)))
+#model.add(BatchNormalization())
+#model.add((Dropout(dropout_rate)))
 
 #hidden layer 7
 model.add(Dense(100, activation='elu', init='he_normal'))
+#model.add(BatchNormalization())
+model.add((Dropout(dropout_rate)))
 
 #hidden layer 8
 model.add(Dense(50, activation='elu', init='he_normal'))
+#model.add(BatchNormalization())
+#model.add((Dropout(dropout_rate)))
 
 #hidden layer 9
 model.add(Dense(10, activation='elu', init='he_normal'))
+#model.add(BatchNormalization())
 
 #output layer
 model.add(Dense(1, activation='elu', init='he_normal'))
@@ -268,8 +289,13 @@ model.add(Dense(1, activation='elu', init='he_normal'))
 model.compile(loss='mean_squared_error', optimizer='adam')
 model.summary()
 
+#init = tf.initialize_all_variables()
 init = tf.global_variables_initializer()
 
+
+filepath="model.h5"
+checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+callbacks_list = [checkpoint]
 
 
 # In[10]:
@@ -281,6 +307,7 @@ print("training start")
 # Launch the graph
 
 history = model.fit(x_train, y_train,
+                    callbacks=callbacks_list, 
                     batch_size=batch_size, nb_epoch=training_epochs,
                     verbose=1, validation_data=(x_valid, y_valid))
 
@@ -291,7 +318,7 @@ model.evaluate(x_test, y_test)
 
 # ## Save Model
 
-# In[12]:
+# In[11]:
 
 ## save model
 from keras.models import load_model
@@ -302,7 +329,7 @@ with open('model.json', 'w') as outfile:
     json.dump(json_model, outfile)
     outfile.close()
 
-model.save('model.h5')
+#model.save('model.h5')
 
 
 # ## Design Notes and Obervatinos
