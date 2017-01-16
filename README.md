@@ -37,14 +37,15 @@ The Network consists of 9 layers,
  - layer 2: Convolution Layer depth of 36 and max pooling factor of 2. Followed by batch normalization.
  - layer 3: Convolution Layer depth of 48 and max pooling factor of 2. Followed by batch normalization.
  - layer 4: Convolution Layer depth of 64 and max pooling factor of 2.
- - layer 5: Convolution Layer depth of 64 and max pooling factor of 2.
+ - layer 5: Convolution Layer depth of 72 and max pooling factor of 2.
  - layer 6: Fully Connected Flat layer with 1164 nodes. With a dropout of 50%
  - layer 7: Fully Connected Flat layer with 100 nodes.
  - layer 8: Fully Connected Flat layer with 10 nodes.
  - layer 9: Fully Connected Output layer with 1 nodes.
 
 ### Training Parameter
- - training_epochs = 40
+ - training_epochs = 22
+   - but best model (minumum val_loss) is selected and saved using keras.callbacks.ModelCheckpoint module which happened at epoc 21
  - batch_size = 128
  - dropout_rate = 0.50
  - learning_rate = 0.005
